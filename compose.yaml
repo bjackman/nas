@@ -1,0 +1,23 @@
+# TODO: Update regularly
+# TODO: Must create filebrowser.db, how to avoid?
+
+services:
+  # docs say:
+  # docker run \
+      # -v /path/to/root:/srv \
+      # -v /path/filebrowser.db:/database.db \
+      # -v /path/.filebrowser.json:/.filebrowser.json \
+      # -u $(id -u):$(id -g) \
+      # -p 8080:80 \
+      #
+  file_browser:
+    image: docker.io/filebrowser/filebrowser
+    ports: "8080:80"
+    volumes:
+      - "data:/srv"
+      - type: bind
+        source: ./filebrowser.db
+        target: /database.db
+        external: true
+volumes:
+  data:
