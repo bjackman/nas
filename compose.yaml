@@ -12,12 +12,23 @@ services:
       #
   file_browser:
     image: docker.io/filebrowser/filebrowser
-    ports: "8080:80"
     volumes:
       - "data:/srv"
       - type: bind
         source: ./filebrowser.db
         target: /database.db
         external: true
+  # docs say:
+  # docker run -d -p 8080:8080 -p 80:80 \
+  #  -v $PWD/traefik.yml:/etc/traefik/traefik.yml traefik:v3.3
+  traefik:
+    image: docker.io/traefik:v3.3
+    ports: "8080:80"
+    command: traefik --configFile=/traefik.yaml
+    configs:
+      - name: "traefik.yaml"
+        content: |
+
 volumes:
+  # The actual NAS filesystem. Will probably be ZFS.
   data:
