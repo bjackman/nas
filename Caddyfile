@@ -4,6 +4,10 @@
 	auto_https off
 }
 
-:80 {
+localhost:80 {
 	respond "Hello, word!"
+}
+
+files.localhost:80 {
+	reverse_proxy file-browser
 }
