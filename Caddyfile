@@ -1,3 +1,9 @@
-:80
+{
+	# Disable redirects and everything until I've started to figure out the
+	# basics of Caddy.
+	auto_https off
+}
 
-respond "Hello, world!"
+:80 {
+	respond "Hello, word!"
+}
