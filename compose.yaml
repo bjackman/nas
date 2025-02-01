@@ -1,6 +1,9 @@
 # TODO: Update regularly
 # TODO: Must create filebrowser.db, how to avoid?
 
+# Note: I don't think podman-compose supports the `develop` or `config`
+# features. It also silently ignores unknown fields AFAICT.
+
 services:
   # docs say:
   # docker run \
