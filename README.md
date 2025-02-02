@@ -17,6 +17,12 @@ ssh $HOST mkdir -p nas/system-data
 ssh $HOST touch nas/system-data/filebrowser.db
 ```
 
+```
+sudo zpool create -m /mnt/nas-data -f nas-pool raidz /dev/sda /dev/sdb /dev/sdc /dev/sdd
+sudo zfs set acltype=posixacl nas-pool
+sudo zfs set xattr=sa nas-pool
+```
+
 To deploy
 
 ```
@@ -94,13 +100,19 @@ The plan
 - [x] Disable port forwarding to avoid exposing insecure FileBrowser defaults
 - [x] Check for data on the old RAID fs, back it up
 - [x] Install Ubuntu Server on the Pi
-- [ ] Create ZFS
+- [x] Create ZFS
+  - [x] Create pool
+  - [x] Ensure it's auto-mounted
+  - [x] Figure out ACLs for the filesystem on it
 - [ ] ZFS mounted exposed to FileBrowser
+- [ ] Make NAS services start up on boot
 - [ ] Add Prometheus
 - [ ] Configure Prometheus SMTP
 - [ ] Add smartmontools
 - [ ] Plumb SMART data into Prometheus
-- [ ] Add alerts for SMART data
+- [ ] Add alerts :
+  - [ ] for SMART data
+  - [ ] for ZFS status
 - [ ] Add Samba
 - [ ] If I run out of memory on the Pi, port this to MicroK8s so I can scale it
       horizontally.
