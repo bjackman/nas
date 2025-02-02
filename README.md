@@ -123,6 +123,7 @@ The plan
 - [ ] Make NAS services start up on boot
 - [ ] Add Prometheus
 - [ ] Configure Prometheus SMTP
+- [ ] Switch back to proper Let's Encrypt certs once rate limite recovers.
 - [ ] Add smartmontools
 - [ ] Plumb SMART data into Prometheus
 - [ ] Add alerts :

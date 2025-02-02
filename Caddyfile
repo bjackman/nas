@@ -1,5 +1,6 @@
 # Note - when accessing this via TailScale the SSL cert will be for the wrong domain.
 # You can fix that by getting Caddy access to talk to the Tailscale socket, but I CBA.
 home.yawn.io {
+	tls internal
 	reverse_proxy file-browser
 }
