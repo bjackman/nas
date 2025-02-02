@@ -5,6 +5,7 @@
 # features. It also silently ignores unknown fields AFAICT.
 
 services:
+
   # docs say:
   # docker run \
       # -v /path/to/root:/srv \
@@ -23,6 +24,7 @@ services:
         external: true
     networks:
       - nas
+
   # docs say:
   # docker run -d -p 8080:8080 -p 80:80 \
   #  -v $PWD/traefik.yml:/etc/traefik/traefik.yml traefik:v3.3
@@ -34,7 +36,25 @@ services:
       - nas
     command: caddy run --config=/Caddyfile
     volumes:
-      - ./Caddyfile:/Caddyfile  # Mount local Caddyfile
+      - ./Caddyfile:/Caddyfile
+
+  # docs say:
+  # podman run \
+  #   -p 9000:9000 \
+  #   -p 9001:9001 \
+  #   -v ~/minio/data:/data \
+  #   -e "MINIO_ROOT_USER=ROOTNAME" \
+  #   -e "MINIO_ROOT_PASSWORD=CHANGEME123" \
+  #   quay.io/minio/minio server /data --console-address ":9001"
+  minio:
+    image: quay.io/minio/minio
+    command: minio server /data --console-address ":9001"
+    volumes:
+      - "data:/data"
+    newtworks:
+     - nas
+
+The example above works this way:
 
 volumes:
   # The actual NAS filesystem. Will probably be ZFS.

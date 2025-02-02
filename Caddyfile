@@ -5,3 +5,11 @@ localhost:80 {
 files.localhost:80 {
 	reverse_proxy file-browser
 }
+
+minio.localhost:80 {
+	reverse_proxy minio
+}
+
+minio-console.localhost:80 {
+	reverse_proxy minio:9001
+}
