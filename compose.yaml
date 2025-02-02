@@ -39,26 +39,20 @@ services:
     volumes:
       - ./Caddyfile:/Caddyfile
 
-  # docs say:
-  # podman run \
-  #   -p 9000:9000 \
-  #   -p 9001:9001 \
-  #   -v ~/minio/data:/data \
-  #   -e "MINIO_ROOT_USER=ROOTNAME" \
-  #   -e "MINIO_ROOT_PASSWORD=CHANGEME123" \
-  #   quay.io/minio/minio server /data --console-address ":9001"
-  minio:
-    image: quay.io/minio/minio
-    ports:
-      - "9000:9000"
-      - "9001:9001"
-    command: minio server /data --console-address ":9001"
-    # This should contain MINIO_ROOT_USSER and MINIO_ROOT_PASSWORD
-    env_file: ./secrets/minio.env
-    volumes:
-      - "data:/data"
-    networks:
-     - nas
+  # Disabled - wanted this for Joplin but it's broken:
+  # https://github.com/laurent22/joplin/issues/9027
+  # minio:
+  #   image: quay.io/minio/minio
+  #   ports:
+  #     - "9000:9000"
+  #     - "9001:9001"
+  #   command: minio server /data --console-address ":9001"
+  #   # This should contain MINIO_ROOT_USSER and MINIO_ROOT_PASSWORD
+  #   env_file: ./secrets/minio.env
+  #   volumes:
+  #     - "data:/data"
+  #   networks:
+  #    - nas
 
 The example above works this way:
 
