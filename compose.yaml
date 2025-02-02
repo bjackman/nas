@@ -54,8 +54,6 @@ services:
   #   networks:
   #    - nas
 
-The example above works this way:
-
 volumes:
   # The actual NAS filesystem. Will probably be ZFS.
   data:
