@@ -26,6 +26,7 @@ services:
         target: /database.db
     networks:
       - nas
+    restart: unless-stopped
 
   # docs say:
   # docker run -d -p 8080:8080 -p 80:80 \
@@ -42,6 +43,7 @@ services:
       - ./Caddyfile:/Caddyfile
       # Persist stuff that's needed to avoid rate limits.
       - ./system-data/caddy_data:/data
+    restart: unless-stopped
 
   # Disabled - wanted this for Joplin but it's broken:
   # https://github.com/laurent22/joplin/issues/9027

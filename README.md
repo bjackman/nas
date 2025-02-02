@@ -123,7 +123,7 @@ The plan
   - [x] Ensure it's auto-mounted
   - [x] Figure out ACLs for the filesystem on it
 - [x] ZFS mounted exposed to FileBrowser
-- [ ] Make NAS services start up on boot
+- [x] Make NAS services start up on boot
 - [ ] Add Prometheus
 - [ ] Configure Prometheus SMTP
 - [ ] Switch back to proper Let's Encrypt certs once rate limite recovers.
