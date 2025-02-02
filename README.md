@@ -2,6 +2,27 @@
 
 To run on Raspberry Pi 5 with the Radxa Penta SATA hat.
 
+## To deploy
+
+(Note: `podman-compose` doesn't work with `podman-remote`. I should have used
+`docker-compose` I guess. But maybe I have to switch to k8s later anyway).
+
+Once:
+
+```
+# TODO: This is dumb, podman-compose is dumb.
+ssh $HOST mkdir -p nas/system-data
+ssh $HOST touch nas/system-data/filebrowser.db
+```
+
+To deploy
+
+```
+rsync --exclude=system-data/ -avz . $HOST:nas && ssh $HOST "cd nas/; podman-compose up"
+```
+
+## Notes and plan
+
 What I need to run:
 
 - ZFS for the main storage

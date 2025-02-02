@@ -19,7 +19,7 @@ services:
     volumes:
       - "data:/srv"
       - type: bind
-        source: ./filebrowser.db
+        source: ./system-data/filebrowser.db
         target: /database.db
         external: true
     networks:
