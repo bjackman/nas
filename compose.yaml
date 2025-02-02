@@ -30,7 +30,9 @@ services:
   #  -v $PWD/traefik.yml:/etc/traefik/traefik.yml traefik:v3.3
   caddy:
     image: docker.io/caddy:2
-    ports: "8080:80"
+    ports:
+      - "80:80"
+      - "443:443"
     command: caddy run --config=/Caddyfile
     networks:
       - nas

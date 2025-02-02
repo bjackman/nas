@@ -2,6 +2,6 @@
 # caught up in SSL nonsense, Caddy and Firefox conspire to make things confusing
 # when I haven't actually set up the SSL port yet.
 
-nas.fritz.box:80 {
+home.yawn.io {
 	reverse_proxy file-browser
 }
