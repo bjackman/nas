@@ -91,13 +91,13 @@ The plan
           reverse_proxy localhost:8081
       }
       ```
-- [ ] Add Prometheus
-- [ ] Configure Prometheus SMTP
-- [ ] Disable port forwarding to avoid exposing insecure FileBrowser defaults
-- [ ] Check for data on the old RAID fs, back it up
-- [ ] Install Ubuntu Server on the Pi
+- [x] Disable port forwarding to avoid exposing insecure FileBrowser defaults
+- [x] Check for data on the old RAID fs, back it up
+- [x] Install Ubuntu Server on the Pi
 - [ ] Create ZFS
 - [ ] ZFS mounted exposed to FileBrowser
+- [ ] Add Prometheus
+- [ ] Configure Prometheus SMTP
 - [ ] Add smartmontools
 - [ ] Plumb SMART data into Prometheus
 - [ ] Add alerts for SMART data
