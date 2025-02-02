@@ -7,6 +7,11 @@ To run on Raspberry Pi 5 with the Radxa Penta SATA hat.
 (Note: `podman-compose` doesn't work with `podman-remote`. I should have used
 `docker-compose` I guess. But maybe I have to switch to k8s later anyway).
 
+(OK no, `docker-compose` also sucks, it doesn't really support remote control in
+a sensible way either, you just expose your Docker daemon socket over TCP? Are
+all these simplified container tools just toys for babies? Do I have to use
+k8s?)
+
 Once:
 
 ```
@@ -23,10 +28,20 @@ sudo zfs set acltype=posixacl nas-pool
 sudo zfs set xattr=sa nas-pool
 ```
 
+```
+# https://github.com/canonical/docker-snap
+sudo snap install docker
+sudo addgroup --system docker
+sudo adduser $USER docker
+newgrp docker
+sudo snap disable docker
+sudo snap enable docker
+```
+
 To deploy
 
 ```
-rsync --exclude=system-data/ -avz . $HOST:nas && ssh $HOST "cd nas/; podman-compose up"
+rsync --exclude=system-data/ -avz . $HOST:nas && ssh $HOST "cd nas/; docker-compose up"
 ```
 
 ## Notes and plan
