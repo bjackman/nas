@@ -26,6 +26,7 @@ ssh $HOST touch nas/system-data/filebrowser.db
 sudo zpool create -m /mnt/nas-data -f nas-pool raidz /dev/sda /dev/sdb /dev/sdc /dev/sdd
 sudo zfs set acltype=posixacl nas-pool
 sudo zfs set xattr=sa nas-pool
+sudo chmod $USER:$USER /mnt/nas-data
 ```
 
 ```
@@ -41,7 +42,9 @@ sudo snap enable docker
 To deploy
 
 ```
-rsync --exclude=system-data/ -avz . $HOST:nas && ssh $HOST "cd nas/; docker-compose up"
+# Note neither podman-compose nor docker-compose good at reloading the config so
+# sometimes you have to down then up.
+rsync --exclude=system-data/ -avz . $HOST:nas && ssh $HOST "cd nas/; podman-compose up"
 ```
 
 ## Notes and plan
@@ -119,7 +122,7 @@ The plan
   - [x] Create pool
   - [x] Ensure it's auto-mounted
   - [x] Figure out ACLs for the filesystem on it
-- [ ] ZFS mounted exposed to FileBrowser
+- [x] ZFS mounted exposed to FileBrowser
 - [ ] Make NAS services start up on boot
 - [ ] Add Prometheus
 - [ ] Configure Prometheus SMTP

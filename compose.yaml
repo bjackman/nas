@@ -17,7 +17,10 @@ services:
   file-browser:
     image: docker.io/filebrowser/filebrowser
     volumes:
-      - "data:/srv"
+       # The actual NAS data - a ZFS filesystem.
+      - type: bind
+        source: /mnt/nas-data
+        target: /srv
       - type: bind
         source: ./system-data/filebrowser.db
         target: /database.db
@@ -54,10 +57,6 @@ services:
   #     - "data:/data"
   #   networks:
   #    - nas
-
-volumes:
-  # The actual NAS filesystem. Will probably be ZFS.
-  data:
 
 networks:
   nas:
