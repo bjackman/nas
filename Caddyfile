@@ -2,30 +2,6 @@
 # caught up in SSL nonsense, Caddy and Firefox conspire to make things confusing
 # when I haven't actually set up the SSL port yet.
 
-localhost:80 {
-	respond "Hello, word!"
-}
-
-files.localhost:80 {
+nas.fritz.box:80 {
 	reverse_proxy file-browser
-}
-
-minio.localhost:80 {
-	# Define a named matcher for traffic that doesn't come from Tailscale IPs.
-	# https://caddyserver.com/docs/caddyfile/matchers
-	# https://tailscale.com/kb/1015/100.x-addresses
-	# For some stupid reason, the matcher has to be re-defined in each site block.
-	@not_internal not remote_ip 100.64.0.0/10
-	handle @not_internal {
-		respond "Forbidden" 403
-	}
-	reverse_proxy minio
-}
-
-minio-console.localhost:80 {
-	@not_internal not remote_ip 100.64.0.0/10
-	handle @not_internal {
-		respond "Forbidden" 403
-	}
-	reverse_proxy minio:9001
 }
