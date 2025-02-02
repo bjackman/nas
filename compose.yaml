@@ -37,6 +37,8 @@ services:
     command: caddy run --config=/Caddyfile
     volumes:
       - ./Caddyfile:/Caddyfile
+      # Persist stuff that's needed to avoid rate limits.
+      - ./system-data/caddy_data:/data
 
   # Disabled - wanted this for Joplin but it's broken:
   # https://github.com/laurent22/joplin/issues/9027
