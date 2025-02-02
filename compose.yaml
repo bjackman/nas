@@ -49,10 +49,15 @@ services:
   #   quay.io/minio/minio server /data --console-address ":9001"
   minio:
     image: quay.io/minio/minio
+    ports:
+      - "9000:9000"
+      - "9001:9001"
     command: minio server /data --console-address ":9001"
+    # This should contain MINIO_ROOT_USSER and MINIO_ROOT_PASSWORD
+    env_file: ./secrets/minio.env
     volumes:
       - "data:/data"
-    newtworks:
+    networks:
      - nas
 
 The example above works this way:
