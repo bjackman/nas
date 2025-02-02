@@ -21,7 +21,6 @@ services:
       - type: bind
         source: ./system-data/filebrowser.db
         target: /database.db
-        external: true
     networks:
       - nas
 
