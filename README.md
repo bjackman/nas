@@ -24,7 +24,7 @@ The plan
       as a "firewall" by being aware of the [Tailscale CGNAT](https://tailscale.com/kb/1015/100.x-addresses) addresses and only routing to "internal" services from those.
 
 - [x] Add MinIO
-- [ ] Figure out how to expose everything on Tailscale, but only the bare
+- [x] Figure out how to expose everything on Tailscale, but only the bare
       minimum on the internet
 
       ChatGPT and DeepSeek R1 gave me slightly differenta approaches for this.
