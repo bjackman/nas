@@ -1,7 +1,3 @@
-# Everything is currently fixed to port 80 as a dumb hack to avoid getting
-# caught up in SSL nonsense, Caddy and Firefox conspire to make things confusing
-# when I haven't actually set up the SSL port yet.
-
 # Note - when accessing this via TailScale the SSL cert will be for the wrong domain.
 # You can fix that by getting Caddy access to talk to the Tailscale socket, but I CBA.
 home.yawn.io {
