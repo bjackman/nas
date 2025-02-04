@@ -73,48 +73,6 @@ The plan
 - [x] Add MinIO
 - [x] Figure out how to expose everything on Tailscale, but only the bare
       minimum on the internet
-
-      ChatGPT and DeepSeek R1 gave me slightly differenta approaches for this.
-
-      ChatGPT:
-
-      ```
-      # Public Service
-      example.com {
-            reverse_proxy http://service-public:8080
-      }
-
-      # Private Service (Tailscale Only)
-      @internal {
-            remote_ip 100.64.0.0/10
-      }
-      private.example.com {
-            route {
-                  abort
-            }
-            route @internal {
-                  reverse_proxy http://service-private:8080
-            }
-      }
-      ```
-
-      DeepSeek R1:
-
-      ```
-      # Public Service (accessible to all)
-      public.example.com {
-          reverse_proxy localhost:8080
-      }
-
-      # Internal Service (Tailscale only)
-      internal.example.com {
-          @deny not remote_ip 100.64.0.0/10
-          handle @deny {
-              respond "Forbidden" 403
-          }
-          reverse_proxy localhost:8081
-      }
-      ```
 - [x] Disable port forwarding to avoid exposing insecure FileBrowser defaults
 - [x] Check for data on the old RAID fs, back it up
 - [x] Install Ubuntu Server on the Pi
@@ -124,6 +82,13 @@ The plan
   - [x] Figure out ACLs for the filesystem on it
 - [x] ZFS mounted exposed to FileBrowser
 - [x] Make NAS services start up on boot
+- [ ] There's too much fiddly stuff happening on the host. Switch to ansible
+  - [ ] Back up the `system-data` directory from the device
+  - [ ] Restore it to a clean Ubuntu installation
+  - [ ] Rewrite the ZFS and `docker-compose` installation as Ansible tasks
+- [ ] Set up something to automatically manage ZFS snapshots. [See how Jeff
+      Geerling did it
+      here](https://github.com/geerlingguy/arm-nas/blob/master/host_vars/nas02.mmoffice.net.yml)
 - [ ] Add Prometheus
 - [ ] Configure Prometheus SMTP
 - [ ] Switch back to proper Let's Encrypt certs once rate limite recovers.
@@ -145,3 +110,14 @@ The plan
       Alternatively I could run something like Authelia on the network, there is
       a well-lit path for Caddy to do this. Then I would have exposed Authelia
       and Caddy but I think those two things are likely to be safe enough.
+
+
+## On docker-compose
+
+(Note: `podman-compose` doesn't work with `podman-remote`. I should have used
+`docker-compose` I guess. But maybe I have to switch to k8s later anyway).
+
+(OK no, `docker-compose` also sucks, it doesn't really support remote control in
+a sensible way either, you just expose your Docker daemon socket over TCP? Are
+all these simplified container tools just toys for babies? Do I have to use
+k8s?)
