@@ -4,13 +4,39 @@ To run on Raspberry Pi 5 with the Radxa Penta SATA hat.
 
 ## To deploy
 
-(Note: `podman-compose` doesn't work with `podman-remote`. I should have used
-`docker-compose` I guess. But maybe I have to switch to k8s later anyway).
+These steps are done on your normal computer, not on the NAS.
 
-(OK no, `docker-compose` also sucks, it doesn't really support remote control in
-a sensible way either, you just expose your Docker daemon socket over TCP? Are
-all these simplified container tools just toys for babies? Do I have to use
-k8s?)
+- If you want your node on Tailscale, generate an [Auth
+  Key](https://login.tailscale.com/admin/settings/keys) to associated the device
+  with your account.
+
+- Install Ansible (e.g. `sudo apt install ansible`)
+
+- Write `./inventory.yaml`:
+
+  ```yaml
+  all:
+    hosts:
+      nas:
+        # Required - FQDN, IP address. whatever you'd ssh to.
+        ansible_host: your-nas
+        # If different from local username
+        ansible_user: your-user
+        # See https://docs.ansible.com/ansible/latest/collections/ansible/builtin/ssh_connection.html
+        # (ctrl-f "Variable: " to see the relevant variables you can set here)
+
+        # Optional - if you skip this TailScale won't be set up.
+        tailscale_authkey: tskey-auth-12345abc-adjkldsajkl
+  ```
+
+- Run `ansible-ansible-playbook site.yaml -i inventory.yam`
+
+> [!TIP]
+> If you wanna fiddle with the playbook and re-run it:
+> Ansible playbooks are supposed to be idempotent but they are often slow at
+> deciding they have nothing to do on subseuent runs. This one certainly is. You can set stuff like
+> --skip-tags=tailscale,ansible to skip the tasks in the playbook based on the
+> `tags` field.
 
 Once:
 

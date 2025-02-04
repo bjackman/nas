@@ -1,0 +1,17 @@
+- hosts: all
+  tasks:
+
+    # I dunno why installing the Ansible requirements is not just a default part
+    # of the process of running a playbook, but for whatever reason it isn't.
+    # I guess maybe they fucked up the dependency management somehow.
+    # Anyway, whatever, just install it in the playbook. This is definitely not
+    # Best Practice.
+    - name: Install Ansible dependencies
+      local_action: command ansible-galaxy install artis3n.tailscale
+      tags: ansible
+
+    - name: Include Tailscale role if auth key is set
+      include_role:
+        name: artis3n.tailscale
+      when: tailscale_authkey is defined
+      tags: tailscale
