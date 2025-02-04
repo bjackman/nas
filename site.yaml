@@ -1,4 +1,11 @@
 - hosts: all
+  vars:
+    nas_base_dir: "{{ ansible_user_dir }}/nas"
+    # This is where we'll store stuff on the NAS host that needs to persiste
+    # across container restarts.
+    nas_system_data_dir: "{{ nas_base_dir }}/system-data"
+    # This is coupled with compose.yaml.
+    filebrowser_database: "{{ nas_system_data_dir }}/filebrowser.db"
   tasks:
 
     # I dunno why installing the Ansible requirements is not just a default part
@@ -15,3 +22,20 @@
         name: artis3n.tailscale
       when: tailscale_authkey is defined
       tags: tailscale
+
+    - name: Ensure NAS state directories exist
+      file:
+        path: "{{ item }}"
+        state: directory
+      with_items:
+        - "{{ nas_base_dir }}"
+        - "{{ nas_system_data_dir }}"
+
+    # Work around dumb docker-compose behaviour where it behaves differently
+    # depending on whether a file exists on the host.
+    # We need to create the
+    - name: Ensure FileBrowser database exists
+      copy:
+        content: ""
+        dest: "{{ filebrowser_database }}"
+        force: false  # Don't create if exists

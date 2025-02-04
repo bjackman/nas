@@ -6,6 +6,8 @@ To run on Raspberry Pi 5 with the Radxa Penta SATA hat.
 
 These steps are done on your normal computer, not on the NAS.
 
+This will install stuff in `~/nas` on the NAS host.
+
 - If you want your node on Tailscale, generate an [Auth
   Key](https://login.tailscale.com/admin/settings/keys) to associated the device
   with your account.
@@ -42,10 +44,6 @@ Once:
 
 ```
 sudo sysctl net.ipv4.ip_unprivileged_port_start=80
-
-# TODO: This is dumb, podman-compose is dumb.
-ssh $HOST mkdir -p nas/system-data
-ssh $HOST touch nas/system-data/filebrowser.db
 ```
 
 ```
