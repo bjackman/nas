@@ -1,6 +1,7 @@
 # Home NAS
 
-To run on Raspberry Pi 5 with the Radxa Penta SATA hat.
+To run on Raspberry Pi 5 with the Radxa Penta SATA hat, on Ubuntu server. Should
+be easy enough to adapt to other distros.
 
 ## To deploy
 
@@ -50,7 +51,6 @@ This will install stuff in `~/nas` on the NAS host.
 Once:
 
 ```
-sudo zpool create -m /mnt/nas-data -f nas-pool raidz /dev/sda /dev/sdb /dev/sdc /dev/sdd
 sudo zfs set acltype=posixacl nas-pool
 sudo zfs set xattr=sa nas-pool
 sudo chmod $USER:$USER /mnt/nas-data
