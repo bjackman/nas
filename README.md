@@ -8,6 +8,13 @@ These steps are done on your normal computer, not on the NAS.
 
 This will install stuff in `~/nas` on the NAS host.
 
+- Make sure all the hardware is already set up - this tool won't e.g. [enable
+  PCIe on your
+  Pi](https://docs.radxa.com/en/accessories/penta-sata-hat/penta-for-rpi5)
+
+- If the disks you want to install ZFS on are anything other than `/dev/sda`,
+  `/dev/sdb`, `/dev/sdc` and `/dev/sdd`, edit `group_vars/nas.yaml`.
+
 - If you want your node on Tailscale, generate an [Auth
   Key](https://login.tailscale.com/admin/settings/keys) to associated the device
   with your account.

@@ -1,0 +1,16 @@
+zfs_pools:
+  - name: nas
+    # People seem to just wang their zpool mount points directly into /, seems
+    # fucked up to me.
+    mount_point: /mnt/nas
+    # I copied this from geerlinguy, I'm not sure why he puts the 'raidz1'
+    # inside the 'members' field like this instead of considering that a
+    # separate parameter, but he seems to know what he's doing so I follow his
+    # lead.
+    # Edit the device names if yours are different.
+    members: >-
+      raidz1
+      /dev/sda
+      /dev/sdb
+      /dev/sdc
+      /dev/sdd

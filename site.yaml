@@ -17,11 +17,12 @@
       local_action: command ansible-galaxy install artis3n.tailscale
       tags: ansible
 
-    - name: Include Tailscale role if auth key is set
-      include_role:
-        name: artis3n.tailscale
-      when: tailscale_authkey is defined
-      tags: tailscale
+    - name: Install NAS dependencies
+      package:
+        name:
+          - zfsutils-linux
+        state: present
+      tags: base
 
     - name: Ensure NAS state directories exist
       file:
@@ -30,6 +31,20 @@
       with_items:
         - "{{ nas_base_dir }}"
         - "{{ nas_system_data_dir }}"
+      tags: base
+
+    - name: Set up unprivileged HTTP server access
+      sysctl:
+        name: net.ipv4.ip_unprivileged_port_start
+        value: 80
+      become: true  # sudo
+      tags: base
+
+    - name: Include Tailscale role if auth key is set
+      include_role:
+        name: artis3n.tailscale
+      when: tailscale_authkey is defined
+      tags: tailscale
 
     # Work around dumb docker-compose behaviour where it behaves differently
     # depending on whether a file exists on the host.
@@ -41,8 +56,16 @@
         force: false  # Don't create if exists
       tags: filebrowser
 
-    - name: Set up unprivileged HTTP server access
-      sysctl:
-        name: net.ipv4.ip_unprivileged_port_start
-        value: 80
+    # Adapted from https://github.com/geerlingguy/arm-nas/blob/master/main.yml
+    - name: Create ZFS pools.
+      # zfs_pools will be read from host_vars. Each entry will be set as the
+      # `item` in the command above.
+      loop: "{{ zfs_pools }}"
+      ansible.builtin.command:
+        # Note - the 'members' contains the raidz1 bit.
+        cmd: "zpool create -m {{ item.mount_point }} {{ item.name }} {{ item.members }} -f"
+        # Avoid trying to repeat the command above. There might be a tidier way
+        # to do it than checking if the mountpoint exists, but whatever.
+        creates: "{{ item.mount_point }}"
       become: true  # sudo
+      tags: zfs
