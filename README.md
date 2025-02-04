@@ -43,10 +43,6 @@ This will install stuff in `~/nas` on the NAS host.
 Once:
 
 ```
-sudo sysctl net.ipv4.ip_unprivileged_port_start=80
-```
-
-```
 sudo zpool create -m /mnt/nas-data -f nas-pool raidz /dev/sda /dev/sdb /dev/sdc /dev/sdd
 sudo zfs set acltype=posixacl nas-pool
 sudo zfs set xattr=sa nas-pool

@@ -39,3 +39,10 @@
         content: ""
         dest: "{{ filebrowser_database }}"
         force: false  # Don't create if exists
+      tags: filebrowser
+
+    - name: Set up unprivileged HTTP server access
+      sysctl:
+        name: net.ipv4.ip_unprivileged_port_start
+        value: 80
+      become: true  # sudo
