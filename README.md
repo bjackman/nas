@@ -51,6 +51,8 @@ This will install stuff in `~/nas` on the NAS host.
 Once:
 
 ```
+# Note - this is not needed, I dunno why I thought it was. POSIX ACLs are not
+# the traditional file ownership biz.
 sudo zfs set acltype=posixacl nas-pool
 sudo zfs set xattr=sa nas-pool
 sudo chmod $USER:$USER /mnt/nas-data
