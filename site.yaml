@@ -69,3 +69,26 @@
         creates: "{{ item.mount_point }}"
       become: true  # sudo
       tags: zfs
+
+    - name: Create Docker system group
+      group:
+        name: docker
+        state: present
+        system: yes
+      become: true
+      tags: docker
+
+    - name: Add current user to Docker group
+      user:
+        name: "{{ ansible_user_id }}"
+        groups: docker
+        append: yes
+      become: true
+      tags: docker
+
+    - name: Install Docker snap
+      snap:
+        name:
+          docker
+      become: true
+      tags: docker

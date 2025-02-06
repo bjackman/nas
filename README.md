@@ -58,16 +58,6 @@ sudo zfs set xattr=sa nas-pool
 sudo chmod $USER:$USER /mnt/nas-data
 ```
 
-```
-# https://github.com/canonical/docker-snap
-sudo snap install docker
-sudo addgroup --system docker
-sudo adduser $USER docker
-newgrp docker
-sudo snap disable docker
-sudo snap enable docker
-```
-
 To deploy
 
 ```
