@@ -99,6 +99,12 @@
         dest: "{{ nas_base_dir }}/compose.yaml"
       tags: docker-compose
 
+    - name: Push Caddyfile
+      template:
+        src: templates/Caddyfile.jinja2
+        dest: "{{ nas_base_dir }}/Caddyfile"
+      tags: docker-compose
+
     - name: Start docker-compose
       community.docker.docker_compose_v2:
         project_src: "{{ nas_base_dir }}"

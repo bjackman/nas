@@ -37,6 +37,9 @@ This will install stuff in `~/nas` on the NAS host.
 
         # Optional - if you skip this TailScale won't be set up.
         tailscale_authkey: tskey-auth-12345abc-adjkldsajkl
+
+        # Required - domain the reverse proxy will serve from
+        nas_domain: your-domain.com
   ```
 
 - Run `ansible-ansible-playbook site.yaml -i inventory.yam`
