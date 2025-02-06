@@ -1,0 +1,50 @@
+# TODO: Update regularly
+# TODO: Must create filebrowser.db, how to avoid?
+
+services:
+  file-browser:
+    image: docker.io/filebrowser/filebrowser
+    volumes:
+       # The actual NAS data - a ZFS filesystem. For the moment just mount the root.
+      - type: bind
+        source: "{{ zfs_pools[0].mount_point }}"
+        target: /srv
+      - type: bind
+        source: "{{ filebrowser_database }}"
+        target: /database.db
+    networks:
+      - nas
+    restart: unless-stopped
+
+  # caddy:
+  #   image: docker.io/caddy:2
+  #   ports:
+  #     - "80:80"
+  #     - "443:443"
+  #   networks:
+  #     - nas
+  #   command: caddy run --config=/Caddyfile
+  #   volumes:
+  #     - ./Caddyfile:/Caddyfile
+  #     # Persist stuff that's needed to avoid rate limits.
+  #     - ./system-data/caddy_data:/data
+  #   restart: unless-stopped
+
+  # # Disabled - wanted this for Joplin but it's broken:
+  # # https://github.com/laurent22/joplin/issues/9027
+  # # minio:
+  # #   image: quay.io/minio/minio
+  # #   ports:
+  # #     - "9000:9000"
+  # #     - "9001:9001"
+  # #   command: minio server /data --console-address ":9001"
+  # #   # This should contain MINIO_ROOT_USSER and MINIO_ROOT_PASSWORD
+  # #   env_file: ./secrets/minio.env
+  # #   volumes:
+  # #     - "data:/data"
+  # #   networks:
+  # #    - nas
+
+networks:
+  nas:
+    name: nas

@@ -92,3 +92,14 @@
           docker
       become: true
       tags: docker
+
+    - name: Push docker-compose config
+      template:
+        src: templates/compose.yaml.jinja2
+        dest: "{{ nas_base_dir }}/compose.yaml"
+      tags: docker-compose
+
+    - name: Start docker-compose
+      community.docker.docker_compose_v2:
+        project_src: "{{ nas_base_dir }}"
+      tags: docker-compose
