@@ -70,15 +70,14 @@
 
     # Adapted from https://github.com/geerlingguy/arm-nas/blob/master/main.yml
     - name: Create ZFS pools.
-      # zfs_pools will be read from host_vars. Each entry will be set as the
+      # zfs_pool will be read from host_vars. Each entry will be set as the
       # `item` in the command above.
-      loop: "{{ zfs_pools }}"
       ansible.builtin.command:
         # Note - the 'members' contains the raidz1 bit.
-        cmd: "zpool create -m {{ item.mount_point }} {{ item.name }} {{ item.members }} -f"
+        cmd: "zpool create -m {{ zfs_pool.mount_point }} {{ zfs_pool.name }} {{ zfs_pool.members }} -f"
         # Avoid trying to repeat the command above. There might be a tidier way
         # to do it than checking if the mountpoint exists, but whatever.
-        creates: "{{ item.mount_point }}"
+        creates: "{{ zfs_pool.mount_point }}"
       become: true  # sudo
       tags: zfs
 
