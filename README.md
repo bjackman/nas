@@ -7,6 +7,11 @@ It uses ZFS, but only really to take advantage of compression (which is not
 enabled explicitly, it seems to be enabled by default) and global snapshots. It
 doesn't create datasets for different users or usecases.
 
+The expectation is that ports 80 and 443 are exposed but the others are only
+accessible on your VPN/home network. Caddy takes care of SSL (getting certs from
+Let's Encrpyt) and serves FileBrowser via reverse-proxy. FileBrowser does its
+own authentication. Prometheus is on port 9090, with no authentication or SSL.
+
 ## To deploy
 
 These steps are done on your normal computer, not on the NAS.
@@ -138,7 +143,7 @@ The plan
       Geerling did it
       here](https://github.com/geerlingguy/arm-nas/blob/master/host_vars/nas02.mmoffice.net.yml)
 - [x] Switch back to proper Let's Encrypt certs once rate limite recovers.
-- [ ] Add Prometheus
+- [x] Add Prometheus
 - [ ] Configure Prometheus SMTP
 - [ ] Add smartmontools
 - [ ] Plumb SMART data into Prometheus

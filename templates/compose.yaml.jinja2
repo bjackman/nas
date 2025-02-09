@@ -55,6 +55,35 @@ services:
     volumes:
       - ./inadyn.conf:/etc/inadyn.conf
 
+  # Stupid bullshit:
+  # https://stackoverflow.com/questions/74810089/err-open-prometheus-queries-active-permission-denied
+  init_prometheus:
+    image: prom/prometheus
+    user: root
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        chown -R 65534:65534 /prometheus
+    volumes:
+      - ./system-data/prometheus:/prometheus
+
+  prometheus:
+    image: prom/prometheus
+    ports:
+      - 9090:9090
+    volumes:
+      - ./prometheus.yaml:/prometheus.yaml
+      - ./system-data/prometheus:/prometheus
+    depends_on:
+      - init_prometheus
+    command:
+      # This is gonna get stored on the Pi's SD card. Presumably it's pretty
+      # small. We also don't really need that much data, the most important job
+      # is to alert on disk failures.
+      - --storage.tsdb.retention.size=512MB
+      - --config.file=/prometheus.yaml
+
   {% endif %}
 
 networks:

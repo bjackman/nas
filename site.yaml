@@ -185,11 +185,15 @@
         dest: "{{ nas_base_dir }}/inadyn.conf"
       tags: inadyn
 
-    - name: Push docker-compose config
+    - name: Push configs for stuff running in docker-compose
       template:
-        src: templates/compose.yaml.jinja2
-        dest: "{{ nas_base_dir }}/compose.yaml"
+        src: "templates/{{ item }}.jinja2"
+        dest: "{{ nas_base_dir }}/{{ item }}"
       tags: docker-compose
+      with_items:
+        - compose.yaml
+        - Caddyfile
+        - prometheus.yaml
 
     - name: Push Caddyfile
       template:
