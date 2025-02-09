@@ -7,7 +7,7 @@ services:
     volumes:
        # The actual NAS data - a ZFS filesystem. For the moment just mount the root.
       - type: bind
-        source: "{{ zfs_pools[0].mount_point }}"
+        source: "{{ zfs_pool.mount_point }}"
         target: /srv
       - type: bind
         source: "{{ filebrowser_database }}"
