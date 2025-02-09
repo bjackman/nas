@@ -134,12 +134,12 @@ The plan
   - [x] Set up FileBrowser without it coming up with `admin:admin` root creds
   - [x] Expose it to the internet again yolo
 - [x] Set up dynamic DNS.
-- [ ] Set up something to automatically manage ZFS snapshots. [See how Jeff
+- [x] Set up something to automatically manage ZFS snapshots. [See how Jeff
       Geerling did it
       here](https://github.com/geerlingguy/arm-nas/blob/master/host_vars/nas02.mmoffice.net.yml)
+- [x] Switch back to proper Let's Encrypt certs once rate limite recovers.
 - [ ] Add Prometheus
 - [ ] Configure Prometheus SMTP
-- [ ] Switch back to proper Let's Encrypt certs once rate limite recovers.
 - [ ] Add smartmontools
 - [ ] Plumb SMART data into Prometheus
 - [ ] Add alerts :
