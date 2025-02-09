@@ -122,7 +122,7 @@ The plan
   - [x] Restore it to a clean Ubuntu installation
   - [x] Rewrite the ZFS and `docker-compose` installation as Ansible tasks
   - [x] Set up FileBrowser without it coming up with `admin:admin` root creds
-  - [ ] Expose it to the internet again yolo
+  - [x] Expose it to the internet again yolo
 - [ ] Set up something to automatically manage ZFS snapshots. [See how Jeff
       Geerling did it
       here](https://github.com/geerlingguy/arm-nas/blob/master/host_vars/nas02.mmoffice.net.yml)
