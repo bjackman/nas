@@ -146,6 +146,7 @@ The plan
   - [ ] for SMART data
   - [ ] for ZFS status
 - [ ] Add Samba
+- [ ] Check if snapshots are working and try to restore one
 - [ ] If I run out of memory on the Pi, port this to MicroK8s so I can scale it
       horizontally.
 - [ ] Think about a way to avoid exposing random OSS projects to the internet on

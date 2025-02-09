@@ -10,6 +10,20 @@
     nas_system_data_dir: "{{ nas_base_dir }}/system-data"
     # This is coupled with compose.yaml.
     filebrowser_database: "{{ nas_system_data_dir }}/filebrowser.db"
+    sanoid_conf: |
+      [{{ zfs_pool.name }}]
+        use_template = production
+        recursive = yes
+
+      [template_production]
+        frequently = 0
+        hourly = 24
+        daily = 30
+        monthly = 11
+        yearly = 1
+        autoprune = yes
+        prune_defer = 75
+
   tasks:
 
     # I dunno why installing the Ansible requirements is not just a default part
@@ -18,7 +32,7 @@
     # Anyway, whatever, just install it in the playbook. This is definitely not
     # Best Practice.
     - name: Install Ansible dependencies
-      local_action: command ansible-galaxy install artis3n.tailscale
+      local_action: command ansible-galaxy install artis3n.tailscale geerlingguy.sanoid
       tags: ansible
 
     - name: Install NAS dependencies
@@ -80,6 +94,17 @@
         # to do it than checking if the mountpoint exists, but whatever.
         creates: "{{ zfs_pool.mount_point }}"
       become: true  # sudo
+      tags: zfs
+
+    - name: Set up Sanoid (ZFS snapshots)
+      include_role:
+        name: geerlingguy.sanoid
+        apply:
+          # Give the tasks inside the role the zfs tag too.
+          tags:
+            - zfs
+          become: true
+          become_user: root
       tags: zfs
 
     - name: Create Docker system group
