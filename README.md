@@ -3,6 +3,10 @@
 To run on Raspberry Pi 5 with the Radxa Penta SATA hat, on Ubuntu server. Should
 be easy enough to adapt to other distros.
 
+It uses ZFS, but only really to take advantage of compression (which is not
+enabled explicitly, it seems to be enabled by default) and global snapshots. It
+doesn't create datasets for different users or usecases.
+
 ## To deploy
 
 These steps are done on your normal computer, not on the NAS.
@@ -98,7 +102,8 @@ The plan
       aware of tailscale - just configure that in the OS and then have Caddy act
       as a "firewall" by being aware of the [Tailscale CGNAT](https://tailscale.com/kb/1015/100.x-addresses) addresses and only routing to "internal" services from those.
 
-- [x] Add MinIO
+- [x] ~~Add MinIO~~ Disabled as the thing I wanted to use it for is
+      [broken](https://github.com/laurent22/joplin/issues/9027)
 - [x] Figure out how to expose everything on Tailscale, but only the bare
       minimum on the internet
 - [x] Disable port forwarding to avoid exposing insecure FileBrowser defaults
@@ -110,10 +115,14 @@ The plan
   - [x] Figure out ACLs for the filesystem on it
 - [x] ZFS mounted exposed to FileBrowser
 - [x] Make NAS services start up on boot
-- [ ] There's too much fiddly stuff happening on the host. Switch to ansible
-  - [ ] Back up the `system-data` directory from the device
-  - [ ] Restore it to a clean Ubuntu installation
-  - [ ] Rewrite the ZFS and `docker-compose` installation as Ansible tasks
+- [ ] Reduce power consumption
+- [ ] Set up DynDNS
+- [x] There's too much fiddly stuff happening on the host. Switch to ansible
+  - [x] Back up the `system-data` directory from the device
+  - [x] Restore it to a clean Ubuntu installation
+  - [x] Rewrite the ZFS and `docker-compose` installation as Ansible tasks
+  - [x] Set up FileBrowser without it coming up with `admin:admin` root creds
+  - [ ] Expose it to the internet again yolo
 - [ ] Set up something to automatically manage ZFS snapshots. [See how Jeff
       Geerling did it
       here](https://github.com/geerlingguy/arm-nas/blob/master/host_vars/nas02.mmoffice.net.yml)
