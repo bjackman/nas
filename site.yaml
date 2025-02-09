@@ -1,3 +1,7 @@
+# This is not how you're Supposed To Use Ansible - this should all be broken up into roles.
+# But, it's fucking annoying to do things properly, instead here's one big dumb
+# playbook file full of tasks.
+
 - hosts: all
   vars:
     nas_base_dir: "{{ ansible_user_dir }}/nas"
