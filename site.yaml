@@ -153,6 +153,13 @@
       tags: filebrowser
       when: filebrowser_db.changed
 
+    - name: Install inadyn config
+      when: inadyn_config
+      copy:
+        content: "{{ inadyn_config }}"
+        dest: "{{ nas_base_dir }}/inadyn.conf"
+      tags: inadyn
+
     - name: Push docker-compose config
       template:
         src: templates/compose.yaml.jinja2

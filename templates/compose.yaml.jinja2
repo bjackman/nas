@@ -45,6 +45,18 @@ services:
   # #   networks:
   # #    - nas
 
+  # I dunno why the extra lines are needed here, I can't be bothered to figure
+  # out this stupid .yaml.jinja2 crap. This should be written in a proper
+  # configuration language.
+  {% if inadyn_config is defined %}
+
+  inadyn:
+    image: troglobit/inadyn
+    volumes:
+      - ./inadyn.conf:/etc/inadyn.conf
+
+  {% endif %}
+
 networks:
   nas:
     name: nas

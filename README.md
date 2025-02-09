@@ -50,6 +50,17 @@ This will install stuff in `~/nas` on the NAS host.
         filebrowser_username: you
         filebrowser_password: hunter2
 
+        # Optional - skip this if you don't need dynamic DNS.
+        # See https://manpages.debian.org/unstable/inadyn/inadyn.conf.5.en.html
+        # for the format of this config.
+        # I am using Cloudflare DNS - this inadyn config causes my DNS records
+        # to be updated to point to my home IP when that changes.
+        inadyn_config: |
+          provider cloudflare.com {
+              username = yawn.io
+              password = "<token that I created in the Cloudflare UI>"
+              hostname = my-subdomain.yawn.io
+          }
   ```
 
 - Run `ansible-ansible-playbook site.yaml -i inventory.yam`
@@ -116,13 +127,13 @@ The plan
 - [x] ZFS mounted exposed to FileBrowser
 - [x] Make NAS services start up on boot
 - [x] Reduce power consumption
-- [ ] Set up DynDNS
 - [x] There's too much fiddly stuff happening on the host. Switch to ansible
   - [x] Back up the `system-data` directory from the device
   - [x] Restore it to a clean Ubuntu installation
   - [x] Rewrite the ZFS and `docker-compose` installation as Ansible tasks
   - [x] Set up FileBrowser without it coming up with `admin:admin` root creds
   - [x] Expose it to the internet again yolo
+- [x] Set up dynamic DNS.
 - [ ] Set up something to automatically manage ZFS snapshots. [See how Jeff
       Geerling did it
       here](https://github.com/geerlingguy/arm-nas/blob/master/host_vars/nas02.mmoffice.net.yml)
