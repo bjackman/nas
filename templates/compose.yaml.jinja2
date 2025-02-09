@@ -54,6 +54,7 @@ services:
     image: troglobit/inadyn
     volumes:
       - ./inadyn.conf:/etc/inadyn.conf
+    restart: unless-stopped
 
   # Stupid bullshit:
   # https://stackoverflow.com/questions/74810089/err-open-prometheus-queries-active-permission-denied
@@ -83,6 +84,7 @@ services:
       # is to alert on disk failures.
       - --storage.tsdb.retention.size=512MB
       - --config.file=/prometheus.yaml
+    restart: unless-stopped
 
   {% endif %}
 
