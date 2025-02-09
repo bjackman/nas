@@ -115,7 +115,7 @@ The plan
   - [x] Figure out ACLs for the filesystem on it
 - [x] ZFS mounted exposed to FileBrowser
 - [x] Make NAS services start up on boot
-- [ ] Reduce power consumption
+- [x] Reduce power consumption
 - [ ] Set up DynDNS
 - [x] There's too much fiddly stuff happening on the host. Switch to ansible
   - [x] Back up the `system-data` directory from the device

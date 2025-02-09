@@ -20,7 +20,7 @@
     - name: Install NAS dependencies
       package:
         name:
-          - zfsutils-linux
+          - zfsutils-linux powertop
         state: present
       tags: base
 
@@ -32,6 +32,24 @@
         - "{{ nas_base_dir }}"
         - "{{ nas_system_data_dir }}"
       tags: base
+
+    # I don't really wanna use the auto-tune thing but I just can't be bothered
+    # to figure out how to persist the specific settings.
+    - name: Set up PowerTOP autotune service
+      template:
+        src: templates/powertop.service.jinja2
+        dest: /etc/systemd/system/powertop.service
+      become: true
+      tags: powertop
+
+    - name: Enable & start PowerTOP autotune service
+      systemd:
+        name: powertop
+        daemon_reload: true
+        enabled: true
+        state: started
+      become: true
+      tags: powertop
 
     - name: Set up unprivileged HTTP server access
       sysctl:

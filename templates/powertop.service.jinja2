@@ -1,0 +1,14 @@
+{# There's actually no reason to need jinja2 here, it's just convenient due to Ansible being dumb. #}
+{# Coped from https://stackoverflow.com/questions/13562222/jinja2-inline-comments #}
+[Unit]
+Description=PowerTOP auto tune
+
+
+[Service]
+Type=oneshot
+Environment="TERM=dumb"
+RemainAfterExit=true
+ExecStart=/usr/sbin/powertop --auto-tune
+
+[Install]
+WantedBy=multi-user.target
