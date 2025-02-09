@@ -3,6 +3,10 @@
 	auto_https off
 }
 
+:80 {
+	reverse_proxy file-browser
+}
+
 # Note - when accessing this via TailScale the SSL cert will be for the wrong domain.
 # You can fix that by getting Caddy access to talk to the Tailscale socket, but I CBA.
 {{ nas_domain }}  {

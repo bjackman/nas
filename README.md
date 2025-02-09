@@ -40,6 +40,12 @@ This will install stuff in `~/nas` on the NAS host.
 
         # Required - domain the reverse proxy will serve from
         nas_domain: your-domain.com
+
+        # Required - credentials to log in to the FileBrowser UI. You can change
+        # these in the UI later.
+        filebrowser_username: you
+        filebrowser_password: hunter2
+
   ```
 
 - Run `ansible-ansible-playbook site.yaml -i inventory.yam`

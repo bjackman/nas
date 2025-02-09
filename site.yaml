@@ -46,16 +46,6 @@
       when: tailscale_authkey is defined
       tags: tailscale
 
-    # Work around dumb docker-compose behaviour where it behaves differently
-    # depending on whether a file exists on the host.
-    # We need to create the
-    - name: Ensure FileBrowser database exists
-      copy:
-        content: ""
-        dest: "{{ filebrowser_database }}"
-        force: false  # Don't create if exists
-      tags: filebrowser
-
     # Adapted from https://github.com/geerlingguy/arm-nas/blob/master/main.yml
     - name: Create ZFS pools.
       # zfs_pools will be read from host_vars. Each entry will be set as the
@@ -92,6 +82,54 @@
           docker
       become: true
       tags: docker
+
+    # Work around dumb docker-compose behaviour where it behaves differently
+    # depending on whether a file exists on the host. If it doesn't, it will
+    # mount it as a directory.
+    - name: Ensure FileBrowser database exists
+      copy:
+        content: ""
+        dest: "{{ filebrowser_database }}"
+        force: false # Don't create if exists
+      tags: filebrowser
+      register: filebrowser_db
+
+    # Create a FileBrowser config. Doing this explicitly is necessary because if
+    # you just boot up FileBrowser with an empty config, the root creds are
+    # admin:admin. FileBrowser has a JSON format for its user DB and its
+    # configuration - it isn't documented but you can see it by doing dumbb
+    # stuff like this:
+    # docker run --rm -v ./system-data/filebrowser.db:/database.db -v ./fb-out:/fb-out filebrowser/filebrowser users export fb-out/users.json
+    # docker run --rm -v ./system-data/filebrowser.db:/database.db -v ./fb-out:/fb-out filebrowser/filebrowser config export /fb-out/config.json
+    # So we could have a config file in this repo and then import it. However,
+    # that would be an annoying way to add users because we'd need to salt and
+    # hash the password ourselves.
+    # So, instead we just do this stupid imperative nonsense.
+    - name: Initialise FileBrowser config
+      docker_container:
+        name: filebrowser-init
+        image: filebrowser/filebrowser
+        command: "config init"
+        auto_remove: true
+        volumes:
+          - "{{ filebrowser_database }}:/database.db"
+        detach: false
+      tags: filebrowser
+      # This will fail if the config is already initialised, so only do it if we
+      # created one above.
+      when: filebrowser_db.changed
+
+    - name: Add FileBrowser user
+      docker_container:
+        name: filebrowser-user-add
+        image: filebrowser/filebrowser
+        command: "users add --perm.admin {{ filebrowser_username }} {{ filebrowser_password }}"
+        auto_remove: true
+        volumes:
+          - "{{ filebrowser_database }}:/database.db"
+        detach: false
+      tags: filebrowser
+      when: filebrowser_db.changed
 
     - name: Push docker-compose config
       template:
