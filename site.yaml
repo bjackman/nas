@@ -24,7 +24,8 @@
     - name: Install NAS dependencies
       package:
         name:
-          - zfsutils-linux powertop
+          - zfsutils-linux
+          - powertop
         state: present
       tags: base
 
