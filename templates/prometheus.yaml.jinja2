@@ -9,5 +9,7 @@ scrape_configs:
   - job_name: 'node'
     static_configs:
       # node_exporter is running outside a container.
-      - targets: ['localhost:9100']
+      # Here's a fucking stupid bullshit workaround to reach it from the
+      # prometheus container.
+      - targets: ['{{ ansible_docker0.ipv4.address }}:9100']
 

@@ -55,6 +55,8 @@ services:
     volumes:
       - ./inadyn.conf:/etc/inadyn.conf
     restart: unless-stopped
+    networks:
+      - nas
 
   # Stupid bullshit:
   # https://stackoverflow.com/questions/74810089/err-open-prometheus-queries-active-permission-denied
@@ -85,9 +87,8 @@ services:
       - --storage.tsdb.retention.size=512MB
       - --config.file=/prometheus.yaml
     restart: unless-stopped
-    # Because node-exporter is running outside the container, run Prometheus on
-    # the host network as a stupid lazy way to get them to talk.
-    network_mode: host
+    networks:
+      - nas
 
   # Taken from node-exporter README
   # https://github.com/prometheus/node_exporter
