@@ -214,8 +214,14 @@
         - Caddyfile
         - prometheus.yaml
 
-    - name: Start docker-compose
+    - name: Start & restart docker-compose
       community.docker.docker_compose_v2:
         project_src: "{{ nas_base_dir }}"
-        state: restarted
+        state: "{{ item }}"
+      # docker-compose is a fucking pain in the arse, seems the only way to get
+      # it to do the thing you obviously fucking want is to do both "up" _and_
+      # "restart".
+      with_items:
+        - present # up
+        - restarted
       tags: docker-compose
