@@ -58,6 +58,8 @@ services:
     networks:
       - nas
 
+  {% endif %}
+
   # Stupid bullshit:
   # https://stackoverflow.com/questions/74810089/err-open-prometheus-queries-active-permission-denied
   init_prometheus:
@@ -102,8 +104,6 @@ services:
   #   restart: unless-stopped
   #   volumes:
   #     - '/:/host:ro,shared'
-
-  {% endif %}
 
 networks:
   nas:
