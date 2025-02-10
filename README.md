@@ -12,6 +12,54 @@ accessible on your VPN/home network. Caddy takes care of SSL (getting certs from
 Let's Encrpyt) and serves FileBrowser via reverse-proxy. FileBrowser does its
 own authentication. Prometheus is on port 9090, with no authentication or SSL.
 
+## Why no dashboard?
+
+There is no dashboard, because there aren't any dashboarding tools that I like:
+
+ - I find Grafana really unwieldy it doesn't really support storing your
+   configuration as code, it's quite heavyweight, and it also has an annoying
+   commercial vibe about it.
+ - [Perses](https://perses.dev/) looks promising and even uses
+   [Cue](https://cuelang.org/) for configuration which seems great. But:
+    - It's clearly really far from being ready for prime time, the docs are
+      half-baked and seem really unprofessional.
+    - It toots the "Dashboards-as-Code" thing really hard but then it still
+      requires you to push your dashboards via its CLI? Argh. And they have a
+      k8s operator? Why? It seems like they started on a good basis but they've
+      gone down the path of something else way too complex.
+  - I found this thing called [Dashbuilder](https://www.dashbuilder.org/) but it
+    seems to be a dead project and the Github link goes to a "[home for leading
+    Open Source projects that play a role in delivering solutions around Business
+    Automation and Artificial Intelligence in the
+    Cloud](https://github.com/kiegroup/kie-tools)."
+
+I still believe there must be a way to build a dashboard from a lightweight
+configuration, but I haven't found it yet.
+
+On way to achieve that would be a simple [Vega](https://vega.github.io/)-based
+static site. From my experience using Vega-Altair for plotting, I think Vega is
+the best way to create graphs & charts. However, there's some special features
+you need from the actual graphing library that are not there in a plain old
+plotting system:
+
+ - It should ideally update live.
+
+ - You should be able to zoom out and scroll around and have extra data fetched
+   as you do so.
+
+ - You should be able to sync this logic across multiple graphs.
+
+ - You should be able to dynamically breakdown and aggregate, and this should
+   also be aggregated across multiple graphs.
+
+Maybe it's possible to make Vega do this, but I'm not sure. Some more dynamicy
+graphing libraries I found:
+
+ - `[uPlot](https://github.com/leeoniya/uPlot)` - doesn't natively offer
+   scrolling though.
+ 
+ - [Chart.js](https://www.chartjs.org/) - I dunno also seems to require plugins.
+
 ## To deploy
 
 These steps are done on your normal computer, not on the NAS.
