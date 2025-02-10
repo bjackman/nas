@@ -35,6 +35,12 @@
       local_action: command ansible-galaxy install artis3n.tailscale geerlingguy.sanoid
       tags: ansible
 
+    # If I just try to install the specific role it doesn't work, I dunno. So
+    # install the whole collection.
+    - name: Install Ansible dependencies for Prometheus
+      local_action: command ansible-galaxy collection install prometheus.prometheus
+      tags: ansible
+
     - name: Install NAS dependencies
       package:
         name:
@@ -184,6 +190,19 @@
         content: "{{ inadyn_config }}"
         dest: "{{ nas_base_dir }}/inadyn.conf"
       tags: inadyn
+
+    # Would like to do this via Docker but the rshared flag listed in the README
+    # https://github.com/prometheus/node_exporter
+    # doesn't work, because the rootfs is private.
+    # So instead we just YOLO this shit, it installs it from a tarball from Github.
+    - name: Install Prometheus node-exporter
+      include_role:
+        name: prometheus.prometheus.node_exporter
+        apply:
+          # Give the tasks inside the role the zfs tag too.
+          tags:
+            - node-exporter
+      tags: node-exporter
 
     - name: Push configs for stuff running in docker-compose
       template:

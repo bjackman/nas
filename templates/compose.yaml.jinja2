@@ -85,6 +85,22 @@ services:
       - --storage.tsdb.retention.size=512MB
       - --config.file=/prometheus.yaml
     restart: unless-stopped
+    # Because node-exporter is running outside the container, run Prometheus on
+    # the host network as a stupid lazy way to get them to talk.
+    network_mode: host
+
+  # Taken from node-exporter README
+  # https://github.com/prometheus/node_exporter
+  # Doesn't work, requires host rootfs to have specific propagation settings.
+  # node-exporter:
+  #   image: quay.io/prometheus/node-exporter
+  #   command:
+  #     - '--path.rootfs=/host'
+  #   network_mode: host
+  #   pid: host
+  #   restart: unless-stopped
+  #   volumes:
+  #     - '/:/host:ro,shared'
 
   {% endif %}
 
