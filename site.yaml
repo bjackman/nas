@@ -217,4 +217,5 @@
     - name: Start docker-compose
       community.docker.docker_compose_v2:
         project_src: "{{ nas_base_dir }}"
+        state: restarted
       tags: docker-compose
