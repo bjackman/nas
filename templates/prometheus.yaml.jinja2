@@ -1,0 +1,13 @@
+global:
+  scrape_interval:     60s
+
+scrape_configs:
+  # Monitor Prometheus itself
+  - job_name: 'prometheus'
+    static_configs:
+      - targets: ['localhost:9090']
+  - job_name: 'node'
+    static_configs:
+      # node_exporter is running outside a container.
+      - targets: ['localhost:9100']
+
