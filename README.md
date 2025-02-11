@@ -60,6 +60,8 @@ graphing libraries I found:
  
  - [Chart.js](https://www.chartjs.org/) - I dunno also seems to require plugins.
 
+OR maybe [this just works](https://stackoverflow.com/a/74995091/1582407)?
+
 ## To deploy
 
 These steps are done on your normal computer, not on the NAS.
@@ -203,10 +205,13 @@ The plan
 - [x] Add Prometheus
 - [x] Add smartmontools
 - [x] Plumb SMART data into Prometheus
-- [ ] Configure Prometheus SMTP
+- [x] Configure Prometheus SMTP
 - [ ] Add alerts :
   - [ ] for SMART data
   - [ ] for ZFS status
+- [ ] Set up Caddy to redirect stuff to the various UI ports
+  - [ ] Make all the UIs aware of their base URL
+  - [ ] Ensure that alerts link to the Alertmanager UI correctly
 - [ ] Add Samba
 - [ ] Check if snapshots are working and try to restore one
 - [ ] If I run out of memory on the Pi, port this to MicroK8s so I can scale it
