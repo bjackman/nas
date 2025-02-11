@@ -55,7 +55,7 @@ plotting system:
 Maybe it's possible to make Vega do this, but I'm not sure. Some more dynamicy
 graphing libraries I found:
 
- - `[uPlot](https://github.com/leeoniya/uPlot)` - doesn't natively offer
+ - [uPlot](https://github.com/leeoniya/uPlot) - doesn't natively offer
    scrolling though.
  
  - [Chart.js](https://www.chartjs.org/) - I dunno also seems to require plugins.
