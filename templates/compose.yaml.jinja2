@@ -92,6 +92,17 @@ services:
     networks:
       - nas
 
+  # https://github.com/prometheus-community/smartctl_exporter
+  #  - no arm64 releases, no documentation for how to build.
+  prometheus-smartctl:
+    image: matusnovak/prometheus-smartctl
+    privileged: true
+    ports:
+      - "9902:9902"
+    restart: unless-stopped
+    networks:
+      - nas
+
   # Taken from node-exporter README
   # https://github.com/prometheus/node_exporter
   # Doesn't work, requires host rootfs to have specific propagation settings.

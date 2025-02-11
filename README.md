@@ -192,9 +192,9 @@ The plan
       here](https://github.com/geerlingguy/arm-nas/blob/master/host_vars/nas02.mmoffice.net.yml)
 - [x] Switch back to proper Let's Encrypt certs once rate limite recovers.
 - [x] Add Prometheus
+- [x] Add smartmontools
+- [x] Plumb SMART data into Prometheus
 - [ ] Configure Prometheus SMTP
-- [ ] Add smartmontools
-- [ ] Plumb SMART data into Prometheus
 - [ ] Add alerts :
   - [ ] for SMART data
   - [ ] for ZFS status

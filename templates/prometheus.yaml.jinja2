@@ -12,4 +12,7 @@ scrape_configs:
       # Here's a fucking stupid bullshit workaround to reach it from the
       # prometheus container.
       - targets: ['{{ ansible_docker0.ipv4.address }}:9100']
+  - job_name: 'smartctl'
+    static_configs:
+      - targets: ['prometheus-smartctl:9902']
 
