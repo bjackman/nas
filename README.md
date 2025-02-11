@@ -114,6 +114,15 @@ This will install stuff in `~/nas` on the NAS host.
               password = "<token that I created in the Cloudflare UI>"
               hostname = my-subdomain.yawn.io
           }
+
+        # Optional - GMail alert configuration
+        # Check this is working using
+        # curl -H 'Content-Type: application/json' -d '[{"labels":{"alertname":"myalert"}}]' http://nas.fritz.box:9093/api/v2/alerts
+        # It might take a few minutes to come through.
+        gmail:
+          account: you@gmail.com
+          # https://support.google.com/accounts/answer/185833?hl=en
+          password: app-pasword
   ```
 
 - Run `ansible-ansible-playbook site.yaml -i inventory.yam`

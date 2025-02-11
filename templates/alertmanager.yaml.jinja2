@@ -1,0 +1,14 @@
+# Cargo-culted from https://www.robustperception.io/sending-email-with-the-alertmanager-via-gmail/
+route:
+  group_by: [Alertname]
+  receiver: email-me
+
+receivers:
+- name: email-me
+  email_configs:
+  - to: "{{ gmail.account }}"
+    from: "{{ gmail.account }}"
+    smarthost: smtp.gmail.com:587
+    auth_username: {{ gmail.account }}
+    auth_identity: {{ gmail.account }}
+    auth_password: "{{ gmail.password }}"

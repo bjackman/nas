@@ -103,6 +103,21 @@ services:
     networks:
       - nas
 
+  {% if gmail is defined %}
+
+  alertmanager:
+    image: prom/alertmanager
+    restart: unless-stopped
+    volumes:
+      - ./alertmanager.yaml:/alertmanager.yaml
+    ports:
+      - 9093:9093
+    command:
+      - --log.level=debug
+      - --config.file=/alertmanager.yaml
+
+  {% endif %}
+
   # Taken from node-exporter README
   # https://github.com/prometheus/node_exporter
   # Doesn't work, requires host rootfs to have specific propagation settings.

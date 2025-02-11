@@ -213,6 +213,7 @@
         - compose.yaml
         - Caddyfile
         - prometheus.yaml
+        - alertmanager.yaml
 
     - name: Start & restart docker-compose
       community.docker.docker_compose_v2:
