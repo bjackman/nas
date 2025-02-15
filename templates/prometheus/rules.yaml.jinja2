@@ -1,5 +1,8 @@
 groups:
 - name: cpu-alerts
   rules:
+    # Example alert that's easy to trigger, to test alerting e2e.
     - alert: HighCPUUsage
-      expr: foo
+      expr: 'rate(node_cpu_seconds_total{mode="idle"}[5m]) < 0.8'
+      annotations:
+        summary: High CPU usage
