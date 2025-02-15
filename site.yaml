@@ -203,7 +203,7 @@
             - node-exporter
       tags: node-exporter
 
-    - name: Push configs for stuff running in docker-compose
+    - name: Push templated configs for stuff running in docker-compose
       template:
         src: "templates/{{ item }}.jinja2"
         dest: "{{ nas_base_dir }}/{{ item }}"
@@ -212,8 +212,15 @@
         - compose.yaml
         - Caddyfile
         - prometheus/prometheus.yaml
-        - prometheus/rules.yaml
         - alertmanager.yaml
+
+    - name: Push static configs for stuff running in docker-compose
+      copy:
+        src: "files/{{ item }}"
+        dest: "{{ nas_base_dir }}/{{ item }}"
+      tags: docker-compose
+      with_items:
+        - prometheus/rules.yaml
 
     - name: Start & restart docker-compose
       community.docker.docker_compose_v2:
