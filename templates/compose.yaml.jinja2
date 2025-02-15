@@ -113,11 +113,13 @@ services:
     restart: unless-stopped
     volumes:
       - ./alertmanager.yaml:/alertmanager.yaml
-    ports:
-      - 9093:9093
     command:
       - --log.level=debug
       - --config.file=/alertmanager.yaml
+      - --web.external-url=http://{{ private_domain }}/alertmanager
+      - --web.listen-address=0.0.0.0:80
+    networks:
+      - nas
 
   {% endif %}
 

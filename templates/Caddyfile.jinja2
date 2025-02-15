@@ -19,6 +19,7 @@ http://{{ private_domain }} {
     abort @denied
 
     # Proxy requests rooted at /promtheus to "prometheus" which is a hostname on
-    # the Docker network.
+    # the Docker network. Then ditto for all the other UIs.
     reverse_proxy /prometheus/* prometheus
+    reverse_proxy /alertmanager/* alertmanager
 }
