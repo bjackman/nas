@@ -207,7 +207,7 @@ The plan
 - [x] Plumb SMART data into Prometheus
 - [x] Configure Prometheus SMTP
 - [x] Add alerts, test e2e with email.
-  - [ ] for SMART data
+  - [x] for SMART data
   - [ ] for ZFS status
 - [ ] Set up Caddy to redirect stuff to the various UI ports
   - [ ] Make all the UIs aware of their base URL
