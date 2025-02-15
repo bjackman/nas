@@ -86,7 +86,10 @@ services:
       # is to alert on disk failures.
       - --storage.tsdb.retention.size=512MB
       - --config.file=/prometheus.yaml
-      - --web.route-prefix=/prometheus
+      # Not too sure why but we have to set the whole URL here. If you just set
+      # --web.route-prefix then /prometheus/ redirects to /query instead of
+      # /prometheus/query.
+      - --web.external-url=http://{{ private_domain }}/prometheus
       - --web.listen-address=0.0.0.0:80
     restart: unless-stopped
     networks:
