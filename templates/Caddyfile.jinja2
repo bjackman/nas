@@ -20,5 +20,5 @@ http://{{ private_domain }} {
 
     # Proxy requests rooted at /promtheus to "prometheus" which is a hostname on
     # the Docker network.
-    reverse_proxy /prometheus/* prometheus:9090
+    reverse_proxy /prometheus/* prometheus
 }

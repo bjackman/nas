@@ -75,8 +75,6 @@ services:
 
   prometheus:
     image: prom/prometheus
-    ports:
-      - 9090:9090
     volumes:
       - ./prometheus.yaml:/prometheus.yaml
       - ./system-data/prometheus:/prometheus
@@ -89,6 +87,7 @@ services:
       - --storage.tsdb.retention.size=512MB
       - --config.file=/prometheus.yaml
       - --web.route-prefix=/prometheus
+      - --web.listen-address=0.0.0.0:80
     restart: unless-stopped
     networks:
       - nas
