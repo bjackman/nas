@@ -1,5 +1,22 @@
 # Note - when accessing this via TailScale the SSL cert will be for the wrong domain.
 # You can fix that by getting Caddy access to talk to the Tailscale socket, but I CBA.
-{{ nas_domain }}  {
+
+# Serve the FileBrowser UI on the public internet.
+{{ public_domain }}  {
 	reverse_proxy file-browser
+}
+
+# Serve the other stuff only on private networks (Tailscale, home LAN).
+# We don't do SSL here - I think it would be possible to mount the Tailscale
+# socket into the container and Caddy would get a cert from there if that's
+# enabled on the tailnet,
+http://{{ private_domain }} {
+    # Define a matcher called "denied" for spooky outsiders.
+    # This is like the builtin "private_ranges" but also the CGNAT range that
+    # tailscale uses. Is this secure? Dunno lmao.
+    @denied not client_ip 192.168.0.0/16 172.16.0.0/12 10.0.0.0/8 127.0.0.1/8 fd00::/8 ::1 100.64.0.0/10
+    # Apply the abort directive to requests matching the above matcher.
+    abort @denied
+
+    reverse_proxy /prometheus prometheus:9090
 }

@@ -98,7 +98,7 @@ This will install stuff in `~/nas` on the NAS host.
         tailscale_authkey: tskey-auth-12345abc-adjkldsajkl
 
         # Required - domain the reverse proxy will serve from
-        nas_domain: your-domain.com
+        public_domain: your-domain.com
 
         # Required - credentials to log in to the FileBrowser UI. You can change
         # these in the UI later.
