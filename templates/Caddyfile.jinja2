@@ -18,5 +18,7 @@ http://{{ private_domain }} {
     # Apply the abort directive to requests matching the above matcher.
     abort @denied
 
-    reverse_proxy /prometheus prometheus:9090
+    # Proxy requests rooted at /promtheus to "prometheus" which is a hostname on
+    # the Docker network.
+    reverse_proxy /prometheus/* prometheus:9090
 }

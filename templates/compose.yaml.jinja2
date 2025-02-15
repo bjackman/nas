@@ -88,6 +88,7 @@ services:
       # is to alert on disk failures.
       - --storage.tsdb.retention.size=512MB
       - --config.file=/prometheus.yaml
+      - --web.route-prefix=/prometheus
     restart: unless-stopped
     networks:
       - nas
