@@ -5,7 +5,8 @@ scrape_configs:
   # Monitor Prometheus itself
   - job_name: 'prometheus'
     static_configs:
-      - targets: ['localhost:9090']
+      - targets: ['localhost']
+    metrics_path: '/prometheus/metrics'
   - job_name: 'node'
     static_configs:
       # node_exporter is running outside a container.
@@ -15,4 +16,3 @@ scrape_configs:
   - job_name: 'smartctl'
     static_configs:
       - targets: ['prometheus-smartctl:9902']
-
