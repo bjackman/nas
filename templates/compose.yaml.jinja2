@@ -76,7 +76,8 @@ services:
   prometheus:
     image: prom/prometheus
     volumes:
-      - ./prometheus.yaml:/prometheus.yaml
+      - ./prometheus/prometheus.yaml:/prometheus.yaml
+      - ./prometheus/rules.yaml:/rules.yaml
       - ./system-data/prometheus:/prometheus
     depends_on:
       - init_prometheus

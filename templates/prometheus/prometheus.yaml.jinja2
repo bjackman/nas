@@ -1,6 +1,15 @@
 global:
   scrape_interval:     60s
 
+alerting:
+  alertmanagers:
+    - static_configs:
+        - targets:
+            - alertmanager:80
+
+rule_files:
+  - /rules.yaml
+
 scrape_configs:
   # Monitor Prometheus itself
   - job_name: 'prometheus'

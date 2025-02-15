@@ -55,6 +55,7 @@
         state: directory
       with_items:
         - "{{ nas_base_dir }}"
+        - "{{ nas_base_dir }}/prometheus"
         - "{{ nas_system_data_dir }}"
       tags: base
 
@@ -212,7 +213,8 @@
       with_items:
         - compose.yaml
         - Caddyfile
-        - prometheus.yaml
+        - prometheus/prometheus.yaml
+        - prometheus/rules.yaml
         - alertmanager.yaml
 
     - name: Start & restart docker-compose
