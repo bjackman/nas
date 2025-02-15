@@ -57,7 +57,7 @@ graphing libraries I found:
 
  - [uPlot](https://github.com/leeoniya/uPlot) - doesn't natively offer
    scrolling though.
- 
+
  - [Chart.js](https://www.chartjs.org/) - I dunno also seems to require plugins.
 
 OR maybe [this just works](https://stackoverflow.com/a/74995091/1582407)?
@@ -206,7 +206,7 @@ The plan
 - [x] Add smartmontools
 - [x] Plumb SMART data into Prometheus
 - [x] Configure Prometheus SMTP
-- [ ] Add alerts :
+- [x] Add alerts, test e2e with email.
   - [ ] for SMART data
   - [ ] for ZFS status
 - [ ] Set up Caddy to redirect stuff to the various UI ports
