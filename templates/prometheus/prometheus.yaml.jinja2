@@ -6,6 +6,7 @@ alerting:
     - static_configs:
         - targets:
             - alertmanager:80
+      path_prefix: /alertmanager
 
 rule_files:
   - /rules.yaml
