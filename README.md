@@ -10,11 +10,14 @@ doesn't create datasets for different users or usecases.
 The expectation is that ports 80 and 443 are exposed but the others are only
 accessible on your VPN/home network. Caddy takes care of SSL (getting certs from
 Let's Encrpyt) and serves FileBrowser via reverse-proxy. FileBrowser does its
-own authentication. Prometheus is on port 9090, with no authentication or SSL.
+own authentication.
 
 ## Why no dashboard?
 
-There is no dashboard, because there aren't any dashboarding tools that I like:
+> [!NOTE]
+> I think this pontification is wrong and it's actually possible to just
+> configure Grafana statically: https://stackoverflow.com/a/74995091/1582407.
+> Just need to try it.
 
  - I find Grafana really unwieldy it doesn't really support storing your
    configuration as code, it's quite heavyweight, and it also has an annoying
@@ -59,8 +62,6 @@ graphing libraries I found:
    scrolling though.
 
  - [Chart.js](https://www.chartjs.org/) - I dunno also seems to require plugins.
-
-OR maybe [this just works](https://stackoverflow.com/a/74995091/1582407)?
 
 ## To deploy
 
@@ -136,24 +137,6 @@ This will install stuff in `~/nas` on the NAS host.
 > --skip-tags=tailscale,ansible to skip the tasks in the playbook based on the
 > `tags` field.
 
-Once:
-
-```
-# Note - this is not needed, I dunno why I thought it was. POSIX ACLs are not
-# the traditional file ownership biz.
-sudo zfs set acltype=posixacl nas-pool
-sudo zfs set xattr=sa nas-pool
-sudo chmod $USER:$USER /mnt/nas-data
-```
-
-To deploy
-
-```
-# Note neither podman-compose nor docker-compose good at reloading the config so
-# sometimes you have to down then up.
-rsync --exclude=system-data/ -avz . $HOST:nas && ssh $HOST "cd nas/; podman-compose up"
-```
-
 ## Notes and plan
 
 What I need to run:
@@ -208,10 +191,12 @@ The plan
 - [x] Configure Prometheus SMTP
 - [x] Add alerts, test e2e with email.
   - [x] for SMART data
-  - [ ] for ZFS status
-- [ ] Set up Caddy to redirect stuff to the various UI ports
-  - [ ] Make all the UIs aware of their base URL
-  - [ ] Ensure that alerts link to the Alertmanager UI correctly
+  - [x] Basic ZFS alert based on node-exporter
+  - [ ] More advanced ZFS alert - pool health. Maybe use [this](https://github.com/pdf/zfs_exporter).
+- [x] Set up Caddy to redirect stuff to the various UI ports
+  - [x] Make all the UIs aware of their base URL
+  - [x] Ensure that alerts link to the Alertmanager UI correctly
+  - [ ] Add a homepage with links to all the UIs
 - [ ] Add Samba
 - [ ] Check if snapshots are working and try to restore one
 - [ ] If I run out of memory on the Pi, port this to MicroK8s so I can scale it
