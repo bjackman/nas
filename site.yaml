@@ -25,7 +25,6 @@
         prune_defer = 75
 
   tasks:
-
     # I dunno why installing the Ansible requirements is not just a default part
     # of the process of running a playbook, but for whatever reason it isn't.
     # I guess maybe they fucked up the dependency management somehow.
@@ -81,7 +80,7 @@
       sysctl:
         name: net.ipv4.ip_unprivileged_port_start
         value: 80
-      become: true  # sudo
+      become: true # sudo
       tags: base
 
     - name: Include Tailscale role if auth key is set
@@ -100,7 +99,7 @@
         # Avoid trying to repeat the command above. There might be a tidier way
         # to do it than checking if the mountpoint exists, but whatever.
         creates: "{{ zfs_pool.mount_point }}"
-      become: true  # sudo
+      become: true # sudo
       tags: zfs
 
     - name: Set up Sanoid (ZFS snapshots)
@@ -132,8 +131,7 @@
 
     - name: Install Docker snap
       snap:
-        name:
-          docker
+        name: docker
       become: true
       tags: docker
 
