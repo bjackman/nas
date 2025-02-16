@@ -128,7 +128,7 @@ This will install stuff in `~/nas` on the NAS host.
           password: app-pasword
   ```
 
-- Run `ansible-ansible-playbook site.yaml -i inventory.yam`
+- Run `ansible-ansible-playbook site.yaml -i inventory.yaml`
 
 > [!TIP]
 > If you wanna fiddle with the playbook and re-run it:
@@ -137,7 +137,26 @@ This will install stuff in `~/nas` on the NAS host.
 > --skip-tags=tailscale,ansible to skip the tasks in the playbook based on the
 > `tags` field.
 
+Assuming you set up GMail for alerting, it's a good idea to test the alerts e2e.
+There's an alert configured for CPU's being pegged, so you can tigger an alert
+by SSHing into the device and running `sudo apt install stress-ng` then
+`stress-ng --cpu $(nproc) --timeout 500s`. After a few minutes you should get an
+email with a `HostHighCpuLoad` alert. Now you have some confidence you'll get
+alerted when your disks fail.
+
 ## Notes and plan
+
+What runs on the host and what runs in a container is a bit of a mess. I think
+on a serious container system this mess would be unnecessary but to aid
+simplicity this uses a docker-compose which seems to be something of a toy. It
+seems the Docker daemon and configuration system is not really well suited to
+running services that interact closely with the actual node, like k8s
+`DaemonSet`. But it might also just be that because the skill level of online
+docker-compose users is lower the examples I copied from are worse. Anyway, the
+upshot is that some shit is un-containerised because it's just eaiser that way.
+Anyway, the things that are uncontainerised are all logically node-local, i.e.
+they are to do with the physical node or its storage, so the only reason to
+containerise them would be for a consistent management mechanism.
 
 What I need to run:
 
@@ -192,7 +211,7 @@ The plan
 - [x] Add alerts, test e2e with email.
   - [x] for SMART data
   - [x] Basic ZFS alert based on node-exporter
-  - [ ] More advanced ZFS alert - pool health. Maybe use [this](https://github.com/pdf/zfs_exporter).
+  - [x] More advanced ZFS alert - pool health. Maybe use [this](https://github.com/pdf/zfs_exporter).
 - [x] Set up Caddy to redirect stuff to the various UI ports
   - [x] Make all the UIs aware of their base URL
   - [x] Ensure that alerts link to the Alertmanager UI correctly
