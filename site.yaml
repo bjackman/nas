@@ -203,6 +203,37 @@
             - node-exporter
       tags: node-exporter
 
+    - name: Install Go SDK for ZFS Exporter
+      apt:
+        name: golang
+      become: true
+      tags: zfs-exporter
+
+    - name: Install zfs-exporter binary
+      command:
+        cmd: go install github.com/pdf/zfs_exporter@latest
+        creates: /usr/local/bin/zfs_exporter
+      environment:
+        GOBIN: /usr/local/bin
+      become: true
+      tags: zfs-exporter
+
+    - name: Create ZFS Exporter service
+      copy:
+        src: files/zfs_exporter.service
+        dest: /etc/systemd/system/zfs_exporter.service
+      become: true
+      tags: zfs-exporter
+
+    - name: Enable ZFS Exporter service
+      systemd_service:
+        daemon_reload: true # Reload service files
+        name: zfs_exporter
+        state: restarted
+        enabled: true # Start on boot
+      become: true
+      tags: zfs-exporter
+
     - name: Push templated configs for stuff running in docker-compose
       template:
         src: "templates/{{ item }}.jinja2"

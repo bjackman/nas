@@ -1,0 +1,16 @@
+[Unit]
+Description=ZFS Exporter for Prometheus
+After=network.target
+Wants=zfs.target
+
+[Service]
+ExecStart=/usr/local/bin/zfs_exporter --web.listen-address=:9134
+Restart=always
+# Some sandboxing biz
+# https://0pointer.net/blog/dynamic-users-with-systemd.html
+DynamicUser=true
+NoNewPrivileges=true
+ProtectHome=true
+
+[Install]
+WantedBy=multi-user.target
