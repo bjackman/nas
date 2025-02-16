@@ -20,6 +20,45 @@ http://{{ private_domain }} {
 
     # Proxy requests rooted at /promtheus to "prometheus" which is a hostname on
     # the Docker network. Then ditto for all the other UIs.
-    reverse_proxy /prometheus/* prometheus
-    reverse_proxy /alertmanager/* alertmanager
+    # We do this via a "handle" directive in order to flatten out the priority
+    # of directives - otherwise all "repond" directives would take precedence over
+    # all "reverse_proxy" directives while we actually want the reverse_proxy to
+    # take predence over the 404 fallback.
+    handle /prometheus/* {
+        reverse_proxy prometheus
+    }
+    handle /alertmanager/* {
+        reverse_proxy alertmanager
+    }
+
+    # Serve a homepage on the root
+    handle / {
+        header Content-Type text/html
+        respond <<HTML
+            <html>
+                <head><title>NAS</title></head>
+                <body>
+                    <ul>
+                        <li><a href="/prometheus/">Prometheus</p></li>
+                        <li><a href="/alertmanager/">Alertmanager</p></li>
+                        <li><a href="https://{{ public_domain }}">FileBrowser</p></li>
+                    </ul>
+                </body>
+            </html>
+            HTML 200
+    }
+
+    # For everything else you're shit outta luck buddy
+    handle {
+        header Content-Type text/html
+        respond <<HTML
+            <html>
+                <head><title>Page not found</title></head>
+                <body>
+                    <p>That's a Texas-sized 404, good buddy.</p>
+                    <p>Try the <a href="/">home page</a>.</p>
+                </body>
+            </html>
+            HTML 404
+    }
 }
