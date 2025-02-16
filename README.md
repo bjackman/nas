@@ -215,8 +215,10 @@ The plan
 - [x] Set up Caddy to redirect stuff to the various UI ports
   - [x] Make all the UIs aware of their base URL
   - [x] Ensure that alerts link to the Alertmanager UI correctly
-  - [ ] Add a homepage with links to all the UIs
+  - [x] Add a homepage with links to all the UIs
 - [ ] Add Samba
+- [ ] Back up `system-data` and document how to restore it
+- [ ] Add a Grafana dashboard? Maybe it's not that bad.
 - [ ] Check if snapshots are working and try to restore one
 - [ ] If I run out of memory on the Pi, port this to MicroK8s so I can scale it
       horizontally.
