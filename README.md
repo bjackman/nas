@@ -126,6 +126,12 @@ This will install stuff in `~/nas` on the NAS host.
           account: you@gmail.com
           # https://support.google.com/accounts/answer/185833?hl=en
           password: app-pasword
+
+        # Optional - SMB users. This is totally separate from the FileBrowser
+        # functionality - different usernames, different directory space.
+        smb_users:
+          - username: yourmum
+            password: xunter3
   ```
 
 - Run `ansible-ansible-playbook site.yaml -i inventory.yaml`
@@ -217,6 +223,10 @@ The plan
   - [x] Ensure that alerts link to the Alertmanager UI correctly
   - [x] Add a homepage with links to all the UIs
 - [ ] Add Samba
+
+  Servers runs and I can connect to it, but can't write files. Turns out the
+  ZFS filesystem is all owned by root. So why the fuck does FileBrowser work?
+  Is Docker doing stupid shit?
 - [ ] Back up `system-data` and document how to restore it
 - [ ] Add a Grafana dashboard? Maybe it's not that bad.
 - [ ] Check if snapshots are working and try to restore one

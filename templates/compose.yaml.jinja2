@@ -124,6 +124,26 @@ services:
 
   {% endif %}
 
+  {% if smb_users is defined %}
+
+  samba:
+    image: dperson/samba
+    ports:
+      - 445:445
+    volumes:
+      - "{{ zfs_pool.mount_point }}/samba:/shares"
+    command:
+      # For each user, create a user, and a share at /shares/$user which only that user can access.
+      {% for user in smb_users -%}
+      - "-u"
+      - "{{ user.username }};{{ user.password }}"
+      - "-s"
+      # Args are browsable=yes, readonly=no, guest=no, users=$user, other shit.
+      - "{{ user.username }};/shares/{{ user.username }};yes;no;no;{{ user.username }};;;"
+      {% endfor -%}
+
+  {% endif %}
+
   # Taken from node-exporter README
   # https://github.com/prometheus/node_exporter
   # Doesn't work, requires host rootfs to have specific propagation settings.
