@@ -48,8 +48,7 @@ services:
   # I dunno why the extra lines are needed here, I can't be bothered to figure
   # out this stupid .yaml.jinja2 crap. This should be written in a proper
   # configuration language.
-  {% if inadyn_config is defined %}
-
+  {% if inadyn_config is defined -%}
   inadyn:
     image: troglobit/inadyn
     volumes:
@@ -57,7 +56,6 @@ services:
     restart: unless-stopped
     networks:
       - nas
-
   {% endif %}
 
   # Stupid bullshit:
@@ -107,8 +105,7 @@ services:
     networks:
       - nas
 
-  {% if gmail is defined %}
-
+  {% if gmail is defined -%}
   alertmanager:
     image: prom/alertmanager
     restart: unless-stopped
@@ -121,11 +118,9 @@ services:
       - --web.listen-address=0.0.0.0:80
     networks:
       - nas
-
   {% endif %}
 
-  {% if smb_users is defined %}
-
+  {% if smb_users is defined -%}
   samba:
     image: dperson/samba
     ports:
@@ -140,8 +135,7 @@ services:
       - "-s"
       # Args are browsable=yes, readonly=no, guest=no, users=$user, other shit.
       - "{{ user.username }};/shares/{{ user.username }};yes;no;no;{{ user.username }};;;"
-      {% endfor -%}
-
+      {% endfor %}
   {% endif %}
 
   # Taken from node-exporter README
