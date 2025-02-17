@@ -234,11 +234,34 @@
       become: true
       tags: zfs-exporter
 
+    # Putting "when" and "with_items" at the top like this is also Not Best
+    # Practice I think. But I like it.
+    - when: smb_users
+      with_items: "{{ smb_users }}"
+      name: Create Samba user directories
+      file:
+        path: "{{ zfs_pool.mount_point }}/samba/{{ item.username }}"
+        state: directory
+        # Docker runs the containers as root, lmao. The janky Samba container
+        # I'm using then creates an internal Unix user called smbuser ("force
+        # user = smbuser" in smb.conf) which it tries to use for all filesystem
+        # accesses. So the stupid workaround is just to let that user write the
+        # directories by letting _all_ users write the directories.
+        # It would not be any more stupid to just get the Samba containr to act
+        # fully as root, but the container image I'm using doesn't provide an
+        # obvious way to do that. To be honest it only seems worth fixing this
+        # if migrating to a proper container runtime anyway.
+        mode: "0777"
+      tags: samba
+      become: true
+
     - name: Push templated configs for stuff running in docker-compose
       template:
         src: "templates/{{ item }}.jinja2"
         dest: "{{ nas_base_dir }}/{{ item }}"
-      tags: docker-compose
+      tags:
+        - docker-compose
+        - templates
       with_items:
         - compose.yaml
         - Caddyfile

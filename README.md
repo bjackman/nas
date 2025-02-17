@@ -227,6 +227,15 @@ The plan
   Servers runs and I can connect to it, but can't write files. Turns out the
   ZFS filesystem is all owned by root. So why the fuck does FileBrowser work?
   Is Docker doing stupid shit?
+
+  I think yes, Docker is doing stupid shit, and also the container image is
+  doing stupid shit.
+
+  Docker runs the container as root!  The container image creates a user called
+  `smbuser` in the `Dockerfile` and configures `force user = smbuser` in
+  `smb.conf`. I guess the idea here is that you just use a plain old Docker
+  volume and you don't care.
+
 - [ ] Back up `system-data` and document how to restore it
 - [ ] Add a Grafana dashboard? Maybe it's not that bad.
 - [ ] Check if snapshots are working and try to restore one
