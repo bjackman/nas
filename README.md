@@ -236,6 +236,11 @@ The plan
   `smb.conf`. I guess the idea here is that you just use a plain old Docker
   volume and you don't care.
 
+- [ ] Fix OOM issue. When a user uploaded a large file via FileBrowser my
+      systemd user instance got OOM killed.
+
+      - [ ] Figure out what was using the RAM
+      - [ ] If it was FileBrowser, try fixing it.
 - [ ] Back up `system-data` and document how to restore it
 - [ ] Add a Grafana dashboard? Maybe it's not that bad.
 - [ ] Check if snapshots are working and try to restore one
