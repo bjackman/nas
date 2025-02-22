@@ -198,7 +198,7 @@
       include_role:
         name: prometheus.prometheus.node_exporter
         apply:
-          # Give the tasks inside the role the zfs tag too.
+          # Give the tasks inside the role the node-exporter tag too.
           tags:
             - node-exporter
       tags: node-exporter
