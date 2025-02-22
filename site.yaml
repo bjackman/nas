@@ -23,6 +23,12 @@
         yearly = 1
         autoprune = yes
         prune_defer = 75
+    # I got some OOMs which I think might be due to the ZFS ARC which can use a
+    # lot of RAM. I asked ChatGPT if perhaps it the ARC doesn't integrate with
+    # direct reclaim properly and it said yes, it made this claim pretty
+    # convincingly, I'm inclined to believe it.
+    # So, ensure that there's always 1.5G of RAM which ZFS won't eat.
+    zfs_arc_max: "{{ ((ansible_memtotal_mb * 1024 * 1024) - (1.5 * 1024**3)) | int }}"
 
   tasks:
     # I dunno why installing the Ansible requirements is not just a default part
@@ -100,6 +106,35 @@
         # to do it than checking if the mountpoint exists, but whatever.
         creates: "{{ zfs_pool.mount_point }}"
       become: true # sudo
+      tags: zfs
+
+    - name: Ensure /etc/modprobe.d/zfs.conf exists
+      copy:
+        dest: /etc/modprobe.d/zfs.conf
+        content: ""
+        force: no  # Don't overwrite if it already exists
+      become: true
+      tags: zfs
+
+    - name: Set zfs_arc_max in /etc/modprobe.d/zfs.conf
+      lineinfile:
+        path: /etc/modprobe.d/zfs.conf
+        line: "options zfs zfs_arc_max={{ zfs_arc_max }}"
+        regexp: "^options zfs zfs_arc_max="
+        create: yes
+      register: set_zfs_arch_max
+      become: true
+      tags: zfs
+
+    - name: Update initramfs
+      command: update-initramfs -u
+      when: set_zfs_arch_max.changed
+      become: true
+      tags: zfs
+
+    - name: Apply new ARC setting immediately
+      command: "echo {{ zfs_arc_max }} > /sys/module/zfs/parameters/zfs_arc_max"
+      become: true
       tags: zfs
 
     - name: Set up Sanoid (ZFS snapshots)
