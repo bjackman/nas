@@ -110,6 +110,13 @@ alerted when your disks fail.
 
 ## Notes and plan
 
+> [!NOTE]
+> After setting this thing up and getting super frustrated with docker-compose,
+> I discovered Podman [has advanced integration with
+> systemd](https://docs.podman.io/en/latest/markdown/podman-systemd.unit.5.html),
+> and that looks like the correct way to manage a set of services running on a
+> single node.
+
 What runs on the host and what runs in a container is a bit of a mess. I think
 on a serious container system this mess would be unnecessary but to aid
 simplicity this uses a docker-compose which seems to be something of a toy. It
